@@ -1,12 +1,12 @@
 const express=require('express');
-const bodyparser=require('body-parser');
-const request=require('request');
 const https=require('https');
 const app=express();
 app.use(express.static('stat-fol'));
-app.use(bodyparser.urlencoded({
-    extended:true
-}));
+app.use(express.urlencoded())
+app.get("/",function(req,res){
+    res.sendFile(__dirname+"/signup.html");
+
+})
 app.post('/',function(req,res){
     const first_name=req.body.name1;
     const last_name=req.body.name2;
@@ -26,7 +26,7 @@ app.post('/',function(req,res){
     const jsondata=JSON.stringify(data);
     const options={
         method:"POST",
-        auth:"Vishwa:b778d66a535434c7e058627d2c11e0d4-us"
+        auth:"Vishwa:b778d66a535434c7e058627d2c11e0d4-us6"
     }
     const url="https://us6.api.mailchimp.com/3.0/lists/4513dd40b4";
     const request=https.request(url,options,function(response){
@@ -40,10 +40,6 @@ app.post('/',function(req,res){
     })
     request.write(jsondata);
     request.end();
-})
-app.get("/",function(req,res){
-    res.sendFile(__dirname+"/signup.html");
-
 })
 app.post('/failure', (req, res) => {
     res.redirect('/')
